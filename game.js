@@ -6,19 +6,20 @@ let posY = 20;
 const speed = 4;
 const keys = {};
 
-// Update character position with bounds checking
+// Update function called every frame
 function update() {
-  if (keys.ArrowLeft && posX > 0) posX -= speed;
-  if (keys.ArrowRight && posX < container.clientWidth - character.clientWidth) posX += speed;
-  if (keys.ArrowUp && posY < container.clientHeight - character.clientHeight) posY += speed;
-  if (keys.ArrowDown && posY > 0) posY -= speed;
+  // WASD keys movement
+  if (keys['a'] && posX > 0) posX -= speed;           // left
+  if (keys['d'] && posX < container.clientWidth - character.clientWidth) posX += speed;  // right
+  if (keys['w'] && posY < container.clientHeight - character.clientHeight) posY += speed; // up
+  if (keys['s'] && posY > 0) posY -= speed;           // down
 
-  // Inverted Y axis for bottom-based positioning
+  // Position by bottom/left for natural "floor" positioning
   character.style.left = posX + 'px';
   character.style.bottom = posY + 'px';
 
   // Walking animation toggle
-  if (keys.ArrowLeft || keys.ArrowRight || keys.ArrowUp || keys.ArrowDown) {
+  if (keys['a'] || keys['d'] || keys['w'] || keys['s']) {
     character.classList.add('walking');
   } else {
     character.classList.remove('walking');
@@ -28,12 +29,11 @@ function update() {
 }
 
 window.addEventListener('keydown', e => {
-  keys[e.key] = true;
+  keys[e.key.toLowerCase()] = true;
 });
 
 window.addEventListener('keyup', e => {
-  keys[e.key] = false;
+  keys[e.key.toLowerCase()] = false;
 });
 
-// Start the update loop
 update();
