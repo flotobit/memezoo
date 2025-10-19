@@ -1,70 +1,39 @@
-// Initial coin count
-let coins = 0;
+const character = document.getElementById('character');
+const container = document.getElementById('game-container');
 
-const coinDisplay = document.getElementById('coin-display');
-const hatchButton = document.getElementById('hatch-button');
-const memeImage = document.getElementById('meme-image');
-const gameContainer = document.getElementById('game-container');
+let posX = 280;
+let posY = 20;
+const speed = 4;
+const keys = {};
 
-// Character position within game container
-let posX = 0;
-let posY = 0;
-const moveStep = 20; // pixels to move per arrow key
-const containerRect = gameContainer.getBoundingClientRect();
+// Update character position with bounds checking
+function update() {
+  if (keys.ArrowLeft && posX > 0) posX -= speed;
+  if (keys.ArrowRight && posX < container.clientWidth - character.clientWidth) posX += speed;
+  if (keys.ArrowUp && posY < container.clientHeight - character.clientHeight) posY += speed;
+  if (keys.ArrowDown && posY > 0) posY -= speed;
 
-// Set memeImage initial style
-memeImage.style.left = posX + 'px';
-memeImage.style.top = posY + 'px';
+  // Inverted Y axis for bottom-based positioning
+  character.style.left = posX + 'px';
+  character.style.bottom = posY + 'px';
 
-function updateCoins() {
-  coinDisplay.textContent = `Coins: ${coins}`;
-}
-
-function hatchMeme() {
-  coins += 10;
-  updateCoins();
-  hatchButton.disabled = true;
-
-  setTimeout(() => {
-    hatchButton.disabled = false;
-  }, 2000);
-}
-
-// Move character inside container boundaries
-function moveCharacter(dx, dy) {
-  const maxX = gameContainer.clientWidth - memeImage.clientWidth;
-  const maxY = gameContainer.clientHeight - memeImage.clientHeight;
-
-  posX = Math.min(Math.max(posX + dx, 0), maxX);
-  posY = Math.min(Math.max(posY + dy, 0), maxY);
-
-  memeImage.style.left = posX + 'px';
-  memeImage.style.top = posY + 'px';
-}
-
-// Event listener for arrow keys
-window.addEventListener('keydown', (e) => {
-  switch(e.key) {
-    case 'ArrowUp':
-      e.preventDefault();
-      moveCharacter(0, -moveStep);
-      break;
-    case 'ArrowDown':
-      e.preventDefault();
-      moveCharacter(0, moveStep);
-      break;
-    case 'ArrowLeft':
-      e.preventDefault();
-      moveCharacter(-moveStep, 0);
-      break;
-    case 'ArrowRight':
-      e.preventDefault();
-      moveCharacter(moveStep, 0);
-      break;
+  // Walking animation toggle
+  if (keys.ArrowLeft || keys.ArrowRight || keys.ArrowUp || keys.ArrowDown) {
+    character.classList.add('walking');
+  } else {
+    character.classList.remove('walking');
   }
+
+  requestAnimationFrame(update);
+}
+
+window.addEventListener('keydown', e => {
+  keys[e.key] = true;
 });
 
-hatchButton.addEventListener('click', hatchMeme);
+window.addEventListener('keyup', e => {
+  keys[e.key] = false;
+});
 
-// Init UI
-updateCoins();
+// Start the update loop
+update();
