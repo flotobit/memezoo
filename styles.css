@@ -1,39 +1,58 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #fefefe;
+  background-color: #f0f2f5;
   text-align: center;
-  padding: 20px;
   margin: 0;
+  padding: 20px;
 }
 
 #game-container {
   margin-top: 20px;
+  position: relative;
+  height: 400px;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid #ccc;
+  background-color: white;
+  overflow: hidden;
 }
 
 #coin-display {
   font-size: 24px;
-  margin-bottom: 15px;
   font-weight: bold;
-}
-
-#hatch-button {
-  padding: 10px 20px;
-  font-size: 18px;
-  cursor: pointer;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-}
-
-#hatch-button:hover {
-  background-color: #45a049;
+  margin-bottom: 10px;
 }
 
 #meme-image {
-  margin-top: 20px;
-  max-width: 300px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  position: absolute;
+  width: 150px;
+  height: auto;
+  left: 0;
+  top: 0;
+  user-select: none;
+  pointer-events: none;
+}
+
+#hatch-button {
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 10px;
+  outline: none;
+  transition: background-color 0.3s;
+}
+
+#hatch-button:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+#hatch-button:disabled {
+  background-color: #6c757d;
+  cursor: default;
 }
 
